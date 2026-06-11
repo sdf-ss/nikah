@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280, initial-scale=0.3">
+    <title>The Holy Nikah Ceremony • Danish & Shabana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Amiri:ital@0;1&family=Montserrat:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-bg: #032b1d; /* Luxury Deep Emerald */
+            --accent-burgundy: #5c1d24;
+            --gold-metallic: #d4af37;
+            --gold-light: #f3e5ab;
+            --text-dark: #202020;
+            --text-muted: #666666;
+            --bg-canvas: #fcfaf6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-canvas);
+            line-height: 1.7;
+            width: 1280px;
+            margin: 0 auto;
+            box-shadow: 0 0 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #celebration-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* --- PRE-OPENING INTRO BLOCK OVERLAY TEXT --- */
+        .door-intro-overlay {
+            position: fixed;
+            top: 8vh; /* Moved higher up to prevent header overlap */
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #ffffff;
+            z-index: 10001;
+            pointer-events: none;
+            transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1), transform 0.8s ease;
+        }
+        .door-intro-overlay .bismillah { margin-bottom: 25px; }
+        .door-intro-overlay h2 { font-family: 'Alex Brush', cursive; font-size: 5rem; color: #ffffff; margin-bottom: 10px; }
+        .door-intro-overlay .subtitle { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 6px; color: var(--gold-light); font-weight: 400; }
+        
+        body.doors-open .door-intro-overlay {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        /* --- CLICK ACTION HINT PANEL BUTTON --- */
+        .click-hint-panel {
+            position: fixed;
+            bottom: 6vh; /* Adjusted lower down to clear details card */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            text-align: center;
+            pointer-events: auto;
+            transition: opacity 0.6s cubic-bezier(0.77, 0, 0.175, 1), transform 0.6s ease;
+        }
+        .open-door-btn {
+            background: #021f15;
+            color: #ffffff;
+            border: 2px solid var(--gold-metallic);
+            padding: 16px 45px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            border-radius: 40px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(212,175,55,0.3);
+            transition: all 0.3s ease;
+        }
+        .open-door-btn:hover {
+            background: var(--gold-metallic);
+            color: var(--primary-bg);
+            box-shadow: 0 12px 35px rgba(212,175,55,0.5);
+            transform: translateY(-2px);
+        }
+        body.doors-open .click-hint-panel { opacity: 0; pointer-events: none; transform: translate(-50%, 30px); }
+
+        /* --- LUXURY GATES DOORS HOOKS (NIKAH) --- */
+        .door-panel {
+            position: fixed;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background-color: #032b1d;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' stroke-opacity='0.15'/%3E%3Ccircle cx='30' cy='30' r='15' fill='none' stroke='%235c1d24' stroke-width='1' stroke-opacity='0.2'/%3E%3C/svg%3E");
+            z-index: 9999;
+            transition: transform 1.6s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .door-panel::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            bottom: 40px;
+            border: 2px solid var(--gold-metallic);
+            opacity: 0.3;
+        }
+        
+        #left-door {
+            left: 0;
+            justify-content: flex-end;
+            border-right: 4px double var(--gold-metallic);
+        }
+        #left-door::before { left: 40px; right: 20px; border-right: none; }
+        
+        #right-door {
+            right: 0;
+            justify-content: flex-start;
+            border-left: 4px double var(--gold-metallic);
+        }
+        #right-door::before { right: 40px; left: 20px; border-left: none; }
+        
+        body.doors-closed { overflow: hidden; }
+        body.doors-closed #left-door { transform: translateX(0); }
+        body.doors-closed #right-door { transform: translateX(0); }
+        body.doors-open #left-door { transform: translateX(-100%); }
+        body.doors-open #right-door { transform: translateX(100%); }
+        body.doors-open { overflow-y: auto; }
+
+        .door-handle-mandala {
+            width: 180px;
+            height: 180px;
+            border: 4px double var(--gold-metallic);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-metallic);
+            font-size: 2.8rem;
+            background: #021f15;
+            box-shadow: 0 0 30px rgba(212,175,55,0.4), inset 0 0 15px rgba(92,29,36,0.6);
+            z-index: 10000;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        #left-door .door-handle-mandala { margin-right: -90px; transform: rotate(-90deg); }
+        #right-door .door-handle-mandala { margin-left: -90px; transform: rotate(90deg); }
+        body.doors-open #left-door .door-handle-mandala { transform: rotate(0deg); }
+        body.doors-open #right-door .door-handle-mandala { transform: rotate(0deg); }
+
+        /* Traditional Silhouette Central Grid Graphic Canvas overlay */
+        .inner-door-illustration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        body.doors-open .inner-door-illustration { opacity: 0; }
+
+        /* --- Inside Main Web Elements --- */
+        .islamic-hero {
+            position: relative;
+            height: 95vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            background: linear-gradient(rgba(3, 43, 29, 0.75), rgba(92, 29, 36, 0.45)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1920') no-repeat center center/cover;
+            background-attachment: fixed;
+            padding: 20px;
+        }
+        .islamic-hero::before {
+            content: ''; position: absolute; inset: 20px; border: 2px solid var(--gold-metallic); opacity: 0.4; pointer-events: none;
+        }
+
+        .bismillah {
+            font-family: 'Amiri', serif; font-size: 2.8rem; color: var(--gold-metallic); margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .urdu-main-title {
+            font-family: 'Noto Nastaliq Urdu', serif; font-size: 1.8rem; color: var(--gold-light); margin: 15px 0; line-height: 2.5; text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+        .header-sub { font-size: 1rem; text-transform: uppercase; letter-spacing: 5px; color: var(--gold-light); margin-bottom: 5px; font-weight: 400; }
+        h1 { font-family: 'Alex Brush', cursive; font-size: 5.5rem; font-weight: 400; color: #ffffff; text-shadow: 2px 2px 8px rgba(0,0,0,0.4); line-height: 1.1; }
+        
+        .tagline-container { max-width: 650px; border-top: 1px solid var(--gold-metallic); border-bottom: 1px solid var(--gold-metallic); padding: 15px 30px; margin-top: 25px; }
+        .tagline-text { font-size: 1rem; letter-spacing: 2px; color: #ffffff; text-transform: uppercase; }
+
+        section { padding: 80px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
+        h2 { font-family: 'Alex Brush', cursive; font-size: 3.8rem; color: var(--accent-burgundy); margin-bottom: 10px; }
+        .section-subtitle { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 25px; }
+        
+        .divider { width: 150px; height: 1px; background: linear-gradient(to right, transparent, var(--gold-metallic), transparent); margin: 0 auto 40px auto; position: relative; }
+        .divider::after { content: '✦'; position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--bg-canvas); padding: 0 10px; color: var(--gold-metallic); font-size: 1.2rem; }
+
+        .urdu-invitation-block { font-family: 'Noto Nastaliq Urdu', serif; font-size: 1.3rem; color: var(--primary-bg); line-height: 2.8; direction: rtl; margin: 30px auto; max-width: 750px; padding: 20px; border-bottom: 1px dashed rgba(212, 175, 55, 0.3); }
+        .invitation-prose { max-width: 700px; margin: 30px auto 0 auto; color: var(--text-dark); font-size: 1.05rem; }
+        
+        .quran-verse-box { background-color: #ffffff; border-left: 4px solid var(--gold-metallic); border-right: 4px solid var(--gold-metallic); padding: 40px 30px; margin: 40px 0; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .arabic-text { font-family: 'Amiri', serif; font-size: 2.2rem; color: var(--primary-bg); line-height: 1.6; margin-bottom: 15px; }
+        .translation-text { font-style: italic; color: var(--text-dark); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        .family-hosts { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 40px 0; text-align: center; }
+        .host-side h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-metallic); margin-bottom: 5px; }
+        .host-names { font-size: 1.1rem; font-weight: 500; color: var(--primary-bg); }
+
+        .card-core { background: #ffffff; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; padding: 50px 40px; box-shadow: 0 15px 40px rgba(3, 43, 29, 0.04); margin-top: 30px; }
+        .card-section-tag { text-transform: uppercase; letter-spacing: 3px; font-size: 1.5rem; color: var(--gold-metallic); font-weight: 600; }
+        .venue-title { font-size: 1.5rem; font-weight: 600; color: var(--primary-bg); margin-top: 15px; letter-spacing: 1px; }
+        .venue-address { font-size: 0.95rem; color: var(--text-muted); max-width: 500px; margin: 10px auto 30px auto; }
+        
+        .logistics-banner { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 25px 0; }
+        .logistics-label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); }
+        .logistics-value { font-weight: 600; color: var(--accent-burgundy); }
+
+        .timeline-flow { max-width: 550px; margin: 35px auto 40px auto; border-left: 1px dashed var(--gold-metallic); padding-left: 25px; text-align: left; }
+        .flow-step { position: relative; margin-bottom: 25px; }
+        .flow-step::before { content: '✦'; position: absolute; left: -31px; top: 2px; font-size: 0.75rem; background: var(--bg-canvas); color: var(--gold-metallic); padding: 0 2px; }
+        .flow-time { font-size: 0.85rem; font-weight: 600; color: var(--gold-metallic); margin-bottom: 2px; }
+        .flow-text { font-size: 1.05rem; color: var(--text-dark); }
+
+        .action-btn { display: inline-flex; align-items: center; background-color: var(--primary-bg); color: #ffffff; border: none; padding: 14px 35px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(3, 43, 29, 0.2); }
+        .action-btn:hover { background-color: var(--accent-burgundy); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(92, 29, 36, 0.3); }
+
+        .countdown-wrap { background-color: var(--primary-bg); color: #ffffff; padding: 60px 20px; text-align: center; }
+        .countdown-title { font-family: 'Alex Brush', cursive; font-size: 3rem; color: var(--gold-metallic); }
+        .till-forever-text { font-size: 1.1rem; color: var(--gold-light); margin-bottom: 25px; letter-spacing: 2px; max-width: 800px; margin: 0 auto 25px auto; }
+        
+        .art-illustration-box { border: 2px solid var(--gold-metallic); border-radius: 50%; width: 150px; height: 150px; margin: 0 auto 30px auto; display: flex; align-items: center; justify-content: center; padding: 15px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2); }
+        .art-illustration-box svg { width: 100%; height: 100%; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        
+        .countdown-container { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+        .countdown-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 175, 55, 0.2); padding: 20px; border-radius: 12px; min-width: 100px; }
+        .num-display { font-size: 2.8rem; font-weight: 400; font-family: 'Amiri', serif; color: var(--gold-metallic); display: block; }
+        .label-display { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #cccccc; }
+
+        footer { background: #111111; color: #777777; text-align: center; padding: 30px 20px; font-size: 0.85rem; border-top: 1px solid #222; }
+    </style>
+</head>
+<body class="doors-closed">
+
+    <div class="door-intro-overlay">
+        <p class="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+        <p class="subtitle" style="letter-spacing: 4px;">Wedding Invitation</p>
+        <h2>Danish &amp; Shabana</h2>
+        <p class="subtitle" style="font-size:0.85rem; margin-top:5px; color: var(--gold-metallic);">The Holy Nikah Ceremony</p>
+        
+        <div style="background: rgba(2, 31, 21, 0.75); border: 1px solid rgba(214, 175, 55, 0.25); backdrop-filter: blur(8px); max-width: 540px; margin: 380px auto 0 auto; padding: 22px; border-radius: 15px; text-align: left; font-family: 'Montserrat', sans-serif; box-shadow: 0 15px 35px rgba(0,0,0,0.4);">
+            <p style="font-size: 0.9rem; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-calendar-days" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Date:</strong> Saturday, July 11, 2026</p>
+            <p style="font-size: 0.9rem; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-clock" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Qutba-e-Nikah:</strong> 11:30 AM</p>
+            <p style="font-size: 0.9rem; margin-bottom: 8px; color: #ffffff; line-height: 1.4;"><i class="fa-solid fa-mosque" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Nikah Venue:</strong> Masjid-E-Khadria, Benson Town</p>
+            <p style="font-size: 0.9rem; color: #ffffff; line-height: 1.4; margin-bottom: 0;"><i class="fa-solid fa-utensils" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Lunch Feast:</strong> Al Azeem Convention Hall (01:00 PM)</p>
+        </div>
+    </div>
+
+    <div class="click-hint-panel">
+        <button class="open-door-btn" onclick="openWeddingDoors()"><i class="fa-solid fa-key" style="margin-right:10px;"></i> Open Invitation</button>
+    </div>
+
+    <div class="inner-door-illustration">
+        <svg width="450" height="400" viewBox="0 0 100 100" style="stroke: #d4af37; stroke-width: 1; fill: none; stroke-linecap: round;">
+            <path d="M50,15 C42,28 35,32 35,45 L65,45 C65,32 58,28 50,15 Z" opacity="0.3"/>
+            <path d="M28,32 L30,32 L30,55 M29,32 L29,27" opacity="0.2"/>
+            <path d="M70,32 L72,32 L72,55 M71,32 L71,27" opacity="0.2"/>
+            <path d="M38,55 C38,42 46,39 46,34 C43,34 43,28 46,28 C49,28 49,34 46,34 C46,39 54,42 54,55 Z" />
+            <path d="M43,28 L49,28 M45,26 L47,26" stroke-width="0.7" />
+            <path d="M54,58 C52,47 58,42 62,36 C66,42 72,47 70,58 Z" />
+            <path d="M62,32 C57,35 52,43 54,58 M62,32 C street-art,35 72,43 70,58" opacity="0.5" stroke-dasharray="1 1"/>
+        </svg>
+    </div>
+
+    <div id="left-door" class="door-panel"><div class="door-handle-mandala">✦</div></div>
+    <div id="right-door" class="door-panel"><div class="door-handle-mandala">✦</div></div>
+
+    <canvas id="celebration-canvas"></canvas>
+
+    <header class="islamic-hero">
+        <p class="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+        <p class="header-sub">The Holy Nikah Ceremony</p>
+        <h1>Danish &amp; Shabana</h1>
+        <p class="urdu-main-title" dir="rtl">رشتۂ ازدواج میں منسلک ہونے کی تقریبِ سعید</p>
+        <div class="tagline-container">
+            <p class="tagline-text">Bound in Faith, United in Love</p>
+        </div>
+    </header>
+
+    <section>
+        <h2>The Solemnization</h2>
+        <p class="section-subtitle">You are cordially invited</p>
+        <div class="divider"></div>
+
+        <div class="family-hosts">
+            <div class="host-side">
+                <h4>Groom's Parents</h4>
+                <p class="host-names">Mr. &amp; Mrs. Mohammed Khizer Ahmed</p>
+            </div>
+            <div class="host-side">
+                <h4>Bride's Parents</h4>
+                <p class="host-names">Mr. &amp; Mrs. Syed Jameel</p>
+            </div>
+        </div>
+
+        <p class="invitation-prose">
+            With the blessings of Almighty Allah, we invite you to grace the blessed wedding ceremony of Danish and Shabana, and humbly request your presence and prayers for their journey ahead.
+        </p>
+
+        <div class="urdu-invitation-block" dir="rtl">
+            اللہ تعالیٰ کے فضل و کرم سے، عزیزم دانش اور عزیزہ شبانہ کے رشتۂ ازدواج میں منسلک ہونے کی اس سعید تقریب میں آپ کی شرکت اور دعاؤں کے متمنی ہیں۔
+        </div>
+
+        <div class="quran-verse-box">
+            <p class="arabic-text" dir="rtl">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَکُم مِّنْ أَنفُسِکُمْ أَزْوَاجًا لِّتَسْکُنُوا إِلَيْهَا</p>
+            <p class="translation-text">"And among His signs is this, that He created for you mates from among yourselves, that you may dwell in tranquility with them..."</p>
+            <p class="verse-citation">— Surah Ar-Rum [30:21]</p>
+        </div>
+
+        <div class="card-core">
+            <span class="card-section-tag">The Union of Blessings</span>
+            
+            <div class="logistics-banner">
+                <div>
+                    <p class="logistics-label">Date</p>
+                    <p class="logistics-value">Saturday, July 11, 2026</p>
+                </div>
+                <div style="width: 1px; background: #eee;"></div>
+                <div>
+                    <p class="logistics-label">Qutba-e-Nikah </p>
+                    <p class="logistics-value">11:30 AM </p>
+                </div>
+            </div>
+
+            <div class="timeline-flow">
+                <div class="flow-step">
+                    <p class="flow-time">Qutba-e-Nikah (Zuhr)</p>
+                    <p class="flow-text"><strong>Masjid-E-Khadria</strong></p>
+                    <p class="venue-subtext">Plot no 68, Millers Rd, Cantonment Railway Quarters, Benson Town, Bengaluru, Karnataka 560046</p>
+                </div>
+                <div class="flow-step">
+                    <p class="flow-time">Lunch (01:00 PM onwards)</p>
+                    <p class="flow-text"><strong>Al Azeem Convention Hall</strong></p>
+                    <p class="venue-subtext">25, Haines Rd, Sulthangunta, Shivaji Nagar, Bengaluru, Karnataka 560051</p>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <a href="https://share.google/BKzCMH9ajx7gBgHcw" target="_blank" class="action-btn">
+                    🗺️ Navigate via Google Map
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div id="countdown-banner-wrapper" class="countdown-wrap">
+        <div class="art-illustration-box">
+            <svg viewBox="0 0 100 100" style="stroke: #d4af37;"><path d="M35,45 C35,32 45,28 45,22 C41,22 41,15 45,15 C49,15 49,22 45,22 C45,28 55,32 55,45 Z" /><path d="M41,15 L49,15 M43,13 L47,13" /><path d="M53,48 C51,36 58,30 62,24 C66,30 73,36 71,48 Z" /><path d="M62,20 C56,23 50,33 52,48 M62,20 C68,23 74,33 72,48" /><path d="M25,55 C15,35 45,30 50,50 C55,30 85,35 75,55 C65,70 50,85 50,85 C50,85 35,70 25,55 Z" opacity="0.3" stroke-dasharray="3 3"/></svg>
+        </div>
+        <h3 class="countdown-title">The Blessed Hour Approaching</h3>
+        <p class="till-forever-text">Counting down to a union written in the heavens, cherished on earth, and destined for eternity... <em><strong>till forever.</strong></em></p>
+        
+        <div class="countdown-container">
+            <div class="countdown-box"><span class="num-display" id="display-days">00</span><span class="label-display">Days</span></div>
+            <div class="countdown-box"><span class="num-display" id="display-hours">00</span><span class="label-display">Hours</span></div>
+            <div class="countdown-box"><span class="num-display" id="display-minutes">00</span><span class="label-display">Minutes</span></div>
+            <div class="countdown-box"><span class="num-display" id="display-seconds">00</span><span class="label-display">Seconds</span></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Danish &amp; Shabana Wedding • Nikah Invitation</p>
+    </footer>
+
+    <script>
+        let doorTimer = null;
+
+        // Unified Door Open Controller Trigger Engine
+        function openWeddingDoors() {
+            if (doorTimer) clearTimeout(doorTimer); // Clears background thread countdown
+            document.body.classList.remove('doors-closed');
+            document.body.classList.add('doors-open');
+        }
+
+        window.onload = function() {
+            initAmbientCelebrationParticles();
+            startLiveClockCalculations();
+            
+            // AUTOMATIC DELAY ENGINE: Triggers curtain slide after 5000 milliseconds
+            doorTimer = setTimeout(() => {
+                openWeddingDoors();
+            }, 10000);
+        };
+
+        const targetNikahTime = new Date("2026-07-11T11:30:00").getTime();
+
+        function startLiveClockCalculations() {
+            setInterval(function() {
+                const nowEpoch = new Date().getTime();
+                const distanceGap = targetNikahTime - nowEpoch;
+
+                const days = Math.floor(distanceGap / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distanceGap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distanceGap % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distanceGap % (1000 * 60)) / 1000);
+
+                document.getElementById("display-days").innerHTML = days < 10 ? "0" + days : days;
+                document.getElementById("display-hours").innerHTML = hours < 10 ? "0" + hours : hours;
+                document.getElementById("display-minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById("display-seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+            }, 1000);
+        }
+
+        function initAmbientCelebrationParticles() {
+            const canvas = document.getElementById('celebration-canvas');
+            const ctx = canvas.getContext('2d');
+            let particlesArray = [];
+            canvas.width = 1280; canvas.height = window.innerHeight;
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedY = Math.random() * 0.4 + 0.1;
+                    this.opacity = Math.random() * 0.4 + 0.2;
+                }
+                update() {
+                    this.y += this.speedY;
+                    if (this.y > canvas.height) { this.y = 0; this.x = Math.random() * canvas.width; }
+                }
+                draw() {
+                    ctx.save(); ctx.globalAlpha = this.opacity; ctx.beginPath();
+                    ctx.fillStyle = '#d4af37'; ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill(); ctx.restore();
+                }
+            }
+            for (let i = 0; i < 55; i++) { particlesArray.push(new Particle()); }
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); particlesArray[i].draw(); }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
