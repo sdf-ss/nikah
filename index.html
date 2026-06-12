@@ -194,13 +194,22 @@
             align-items: center;
             text-align: center;
             color: #ffffff;
+            /* CHANGED: Swapped 'center center' to '68% center' to slide the focal area over to frame both individuals */
             background: linear-gradient(rgba(3, 43, 29, 0.75), rgba(92, 29, 36, 0.45)), 
-                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1920') no-repeat center center/cover;
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1920') no-repeat 68% center/cover;
             background-attachment: fixed;
             padding: 20px;
         }
         .islamic-hero::before {
             content: ''; position: absolute; inset: 20px; border: 2px solid var(--gold-metallic); opacity: 0.4; pointer-events: none;
+        }
+
+        /* CHANGED: Added dynamic handling for mobile viewport aspect scaling */
+        @media screen and (max-width: 768px) {
+            .islamic-hero {
+                background-attachment: scroll; /* Fixes mobile scaling render bugs on iOS/Android */
+                background-position: 66% center; /* Tweak precision framing on ultra-narrow views */
+            }
         }
 
         .bismillah {
@@ -277,7 +286,7 @@
         <div style="background: rgba(2, 31, 21, 0.75); border: 1px solid rgba(214, 175, 55, 0.25); backdrop-filter: blur(8px); max-width: 540px; margin: 380px auto 0 auto; padding: 22px; border-radius: 15px; text-align: left; font-family: 'Montserrat', sans-serif; box-shadow: 0 15px 35px rgba(0,0,0,0.4);">
             <p style="font-size: 0.9rem; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-calendar-days" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Date:</strong> Saturday, July 11, 2026</p>
             <p style="font-size: 0.9rem; margin-bottom: 8px; color: #ffffff;"><i class="fa-solid fa-clock" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Qutba-e-Nikah:</strong> 11:30 AM</p>
-            <p style="font-size: 0.9rem; margin-bottom: 8px; color: #ffffff; line-height: 1.4;"><i class="fa-solid fa-mosque" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Nikah Venue:</strong> Masjid-E-Khadria, Benson Town</p>
+            <p style="font-size: 0.9rem; color: #ffffff; line-height: 1.4;"><i class="fa-solid fa-mosque" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Nikah Venue:</strong> Masjid-E-Khadria, Benson Town</p>
             <p style="font-size: 0.9rem; color: #ffffff; line-height: 1.4; margin-bottom: 0;"><i class="fa-solid fa-utensils" style="color: var(--gold-metallic); margin-right: 12px; width: 20px;"></i> <strong>Lunch Feast:</strong> Al Azeem Convention Hall (01:00 PM)</p>
         </div>
     </div>
@@ -294,7 +303,7 @@
             <path d="M38,55 C38,42 46,39 46,34 C43,34 43,28 46,28 C49,28 49,34 46,34 C46,39 54,42 54,55 Z" />
             <path d="M43,28 L49,28 M45,26 L47,26" stroke-width="0.7" />
             <path d="M54,58 C52,47 58,42 62,36 C66,42 72,47 70,58 Z" />
-            <path d="M62,32 C57,35 52,43 54,58 M62,32 C street-art,35 72,43 70,58" opacity="0.5" stroke-dasharray="1 1"/>
+            <path d="M62,32 C57,35 52,43 54,58 M62,32 C57,35 72,43 70,58" opacity="0.5" stroke-dasharray="1 1"/>
         </svg>
     </div>
 
